@@ -8,8 +8,8 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASSWORD')]) {
-                    sh 'git clone https://$GIT_USER:$GIT_PASSWORD@github.com/geetha8500/hello-world-python.git'
+                withCredentials([usernamePassword(credentialsId: 'git-credentials', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASSWORD')]) {
+                    sh 'git clone https://$GIT_USER:$GIT_PASSWORD@github.com/geetha-17/hello-world-python.git'
                 }
             }
         }
@@ -22,8 +22,8 @@ pipeline {
 
         stage('Login to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'geetha8500', passwordVariable: 'geetha8500')]) {
-                    sh 'echo $geetha8500 | docker login -u $geetha8500 --password-stdin'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin'
                 }
             }
         }

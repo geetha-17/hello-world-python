@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_HUB_USER = 'geetha8500'
+        DOCKER_HUB_PASSWORD = 'geetha8500'
+        IMAGE_NAME = 'geetha8500/hello-world-python'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/geetha8500/hello-world-python.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+
+        stage('Login to Docker Hub') {
+            steps {
+                sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                sh 'docker push $IMAGE_NAME'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build and Push Successful!'
+        }
+        failure {
+            echo 'Build Failed!'
+        }
+    }
+}
